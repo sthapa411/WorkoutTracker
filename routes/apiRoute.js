@@ -3,11 +3,16 @@ const Workout = require("../models/workout");
 
 
 module.exports = function(app) {
-  // middleware that is specific to this router
-  app.use(function timeLog(req, res, next) {
-    console.log("Time: ", Date.now());
-    next();
-  });
+  
+  app.get("/api/workouts",function(req,res){  
+    Workout.find()
+    .then(data =>{  
+        res.json(data)
+    })
+    .catch(err => { 
+        res.json(err)
+    })
+});
   
   app.post("/api/workouts",function (req,res){    
     Workout.create({})
