@@ -1,4 +1,6 @@
 var path = require("path");
+var express = require("express");
+var app = express.app();
 
 module.exports = function(app){ 
 app.get("/exercise", function(req, res) {
@@ -14,3 +16,4 @@ app.get("/stats", function(req, res) {
 });
 
 }
+module.exports = app;
