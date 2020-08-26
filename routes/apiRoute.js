@@ -5,12 +5,12 @@ const Workout = require("../models/workout");
 
 module.exports = function(app) {
   // middleware that is specific to this router
-  router.use(function timeLog(req, res, next) {
+  app.use(function timeLog(req, res, next) {
     console.log("Time: ", Date.now());
     next();
   });
   
-  router.get("/api/workouts", (req, res) => {
+  app.get("/api/workouts", (req, res) => {
     Workout.find()
       .then(dbWorkout => {
         res.json(dbWorkout);
@@ -20,7 +20,7 @@ module.exports = function(app) {
       });
   });
   
-  router.post("/api/workouts", (req, res) => {
+  app.post("/api/workouts", (req, res) => {
   Workout.create({})
     .then(dbWorkout => {
       res.json(dbWorkout);
@@ -30,7 +30,7 @@ module.exports = function(app) {
     });
 });
 
-router.put("/api/workouts/:id", ({ body, params }, res) => {
+app.put("/api/workouts/:id", ({ body, params }, res) => {
   Workout.findByIdAndUpdate(
     params.id,
     { $push: { exercises: body } },
@@ -45,7 +45,7 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
     });
 });
 
-router.get("/api/workouts/range", (req, res) => {
+app.get("/api/workouts/range", (req, res) => {
   Workout.find({})
     .then(dbWorkout => {
       // console.log(dbWorkout)
