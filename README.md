@@ -12,5 +12,8 @@ Add new exercises to a new workout plan.
 
 View multiple the combined weight of multiple exercises on the stats page.
 
-
+Picture of main page:
 ![FitnessTracker.png](https://github.com/sthapa411/WorkoutTracker/blob/master/FitnessTracker.png)
+
+Picture of Stat page:
+![stat.png](https://github.com/sthapa411/WorkoutTracker/blob/master/stat.png)
