@@ -1,55 +1,58 @@
-
+const router = require("express").Router();
 const Workout = require("../models/workout");
 
 
-module.exports = function(app) {
-  
-  app.get("/api/workouts",function(req,res){  
-    Workout.find()
-    .then(data =>{  
-        res.json(data)
-    })
-    .catch(err => { 
-        res.json(err)
-    })
-});
-  
-  app.post("/api/workouts",function (req,res){    
-    Workout.create({})
-    .then(data => res.json(data))
-    .catch(err => { 
-        res.json(err)
-    })
+// get last workout
+router.get("/api/workouts", (req,res) => {
+  Workout.find({})
+  .then(workouts => {
+    res.send(workouts);
+  })
+  .catch(err => {
+    res.status(400).json(err);
+  });
 });
 
-  app.get("/api/workouts/range",function(req,res){  
-    Workout.find()
-    .then(data =>{  
-        res.json(data)
-    })
-    .catch(err => { 
-        res.json(err)
-    })
+// add to previous exercise
+router.put("/api/workouts/:id", ({body,params},res) => {
+  console.log(body)
+  Workout.findByIdAndUpdate(params.id,
+    {
+      $push: {
+        exercises: body
+      }
+    },
+    (error, data) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(data);
+      }
+    }
+  );
 });
 
 
-  app.post("/api/workouts/range",function (req,res){    
-    Workout.create({})
-    .then(data => res.json(data))
-    .catch(err => { 
-        res.json(err)
+// create workout
+router.post("/api/workouts", ({body},res) => {
+  Workout.create(body)
+    .then(workout => {
+      res.json(workout);
     })
+    .catch(err=> {
+      res.json(err);
+  })
 });
 
-  app.put("/api/workouts/:id",({body,params},res)=>{   
-    Workout.findByIdAndUpdate(  
-     params.id,
-     {$push:{exercises:body} },
-     {new: true,runValidators:true }
-    )
-    .then(data => res.json(data))
-    .catch(err => { 
-        res.json(err)
-    })
-});
-}
+// get workouts in range
+router.get("/api/workouts/range", (req,res) => {
+  Workout.find({}).limit(7)
+  .then(workouts => {
+    res.json(workouts);
+  })
+  .catch(err => {
+    res.status(400).json(err);
+  });
+})
+
+module.exports = router;

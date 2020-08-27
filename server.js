@@ -1,13 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const morgan = require("morgan");
-const apiRoutes = require("./routes/apiRoute.js");
-const htmlRoutes = require("./routes/htmlRoute.js")
+const logger = require("morgan");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(morgan("dev"));
+app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,8 +17,8 @@ mongoose.connect(MONGODB_URI,{
   useFindAndModify: false
 })
 
-app.use(htmlRoutes);
-app.use(apiRoutes);
+app.use(require("./routes/apiRoute.js"));
+app.use(require("./routes/htmlRoute.js"));
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
